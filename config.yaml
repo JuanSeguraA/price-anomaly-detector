@@ -1,0 +1,42 @@
+# Tickers to pull and check every run.
+tickers:
+  - AAPL
+  - MSFT
+  - NVDA
+  - TSLA
+  - AMZN
+  - JPM
+  - XOM
+
+# How much history to download. More history means a more stable baseline
+# for "normal" volatility and drawdown, but also a slower first run.
+lookback_days: 400
+
+# Rolling window sizes, in trading days, for each metric.
+windows:
+  volatility_short: 20
+  volatility_baseline: 90
+  drawdown_window: 60
+  rsi_window: 14
+  bollinger_window: 20
+
+# Thresholds that decide what counts as "unusual". These are ratios or
+# percentiles relative to a ticker's own history, not fixed price levels,
+# since a 3% move means something different for a utility stock than for
+# a small biotech.
+rules:
+  # Flag if short-term volatility is this many times the baseline volatility.
+  volatility_ratio_threshold: 1.8
+
+  # Flag if the stock has dropped at least this fraction from its rolling
+  # high within the drawdown window (0.10 = down 10% from the recent peak).
+  drawdown_threshold: 0.10
+
+  # Flag if RSI is at or beyond these levels (classic overbought/oversold
+  # bounds, kept configurable instead of hardcoded in the rule logic).
+  rsi_overbought: 70
+  rsi_oversold: 30
+
+  # Flag if the latest close is outside the Bollinger Bands by this many
+  # standard deviations beyond the band itself (0 = touching the band).
+  bollinger_breach_std: 0.0
